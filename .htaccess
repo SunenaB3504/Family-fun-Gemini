@@ -1,0 +1,13 @@
+# Enable the rewrite engine
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    
+    # Add any specific rewrite rules your site needs here
+</IfModule>
+
+# Prevent directory listing
+Options -Indexes
+
+# Set default character set
+AddDefaultCharset UTF-8

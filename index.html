@@ -159,7 +159,7 @@
             border: 2px dashed #FF9800;
         }
 
-        /* Card styling for mini-game */
+        /* Card styling for mini-game - back to original version */
         .card {
             width: 120px;
             height: 170px;
@@ -208,6 +208,25 @@
         .card-selected {
             border: 3px solid gold;
             animation: pulse 1s infinite;
+        }
+        
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+        
+        .mini-game-title {
+            color: #FF5722;
+            margin-bottom: 10px;
+        }
+        
+        .mini-game-instructions {
+            color: #673AB7;
+            font-weight: bold;
+            margin-bottom: 20px;
         }
         
         @keyframes pulse {
@@ -315,6 +334,172 @@
             font-weight: bold;
             color: #673AB7;
         }
+
+        /* Add styling for the seasons strip */
+        .season-strip {
+            display: flex;
+            flex-direction: column;
+            margin: 15px 0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .season {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            margin-bottom: 2px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .season-name {
+            width: 80px;
+            text-align: center;
+            padding: 5px;
+            border-radius: 8px 0 0 8px;
+        }
+        
+        .season-months {
+            flex-grow: 1;
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .season-month {
+            padding: 5px;
+            border-radius: 5px;
+        }
+        
+        .spring {
+            background-color: #8BC34A;
+        }
+        
+        .summer {
+            background-color: #FF9800;
+        }
+        
+        .fall {
+            background-color: #795548;
+        }
+        
+        .winter {
+            background-color: #03A9F4;
+        }
+
+        /* Zodiac sign styling */
+        .zodiac-strip {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .zodiac-item {
+            background: linear-gradient(135deg, #7e57c2, #5e35b1);
+            border-radius: 10px;
+            padding: 8px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .zodiac-name {
+            font-weight: bold;
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+        
+        .zodiac-dates {
+            font-size: 0.75rem;
+            background-color: rgba(255,255,255,0.2);
+            padding: 3px 6px;
+            border-radius: 10px;
+            width: 100%;
+        }
+        
+        /* Color variations for zodiac signs */
+        .fire { background: linear-gradient(135deg, #FF5722, #E64A19); }
+        .earth { background: linear-gradient(135deg, #8BC34A, #689F38); }
+        .air { background: linear-gradient(135deg, #03A9F4, #0288D1); }
+        .water { background: linear-gradient(135deg, #9C27B0, #7B1FA2); }
+
+        /* Zodiac strip title */
+        .visual-aids-title {
+            background: #673AB7;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 10px 10px 0 0;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: -10px;
+            text-align: center;
+        }
+
+        /* Hint system styling */
+        #hint-buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+            justify-content: center;
+        }
+        
+        .hint-button {
+            background-color: #7E57C2;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .hint-button:before {
+            content: "💡";
+            font-size: 1rem;
+        }
+        
+        .hint-button:hover {
+            background-color: #5E35B1;
+            transform: translateY(-2px);
+        }
+        
+        .hint-button.active-hint {
+            background-color: #4CAF50;
+        }
+        
+        .hint-button.active-hint:before {
+            content: "✓";
+        }
+        
+        /* Initially hide visual aids */
+        #weekday-strip,
+        #month-strip,
+        #zodiac-strip,
+        #seasons-strip,
+        .visual-aids-title {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        /* Show when the visible-hint class is applied */
+        .visible-hint {
+            display: block !important;
+            opacity: 1 !important;
+            animation: fadeIn 0.5s;
+        }
     </style>
     <!-- Add this to force reload all resources -->
     <script>
@@ -354,13 +539,112 @@
             </header>
 
             <div id="visual-aids">
-                 <div id="weekday-strip" class="strip">
+                <!-- Add hint buttons container -->
+                <div id="hint-buttons-container">
+                    <button id="weekdays-hint-button" class="hint-button">Show Weekdays</button>
+                    <button id="months-hint-button" class="hint-button">Show Months</button>
+                    <button id="zodiac-hint-button" class="hint-button">Show Zodiac Signs</button>
+                    <button id="seasons-hint-button" class="hint-button">Show Seasons</button>
+                </div>
+
+                <!-- Existing visual aids with initial hidden state -->
+                <div id="weekday-strip" class="strip">
                     <span>SUN</span><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span>
-                 </div>
-                 <div id="month-strip" class="strip">
-                     <span>JAN</span><span>FEB</span><span>MAR</span><span>APR</span><span>MAY</span><span>JUN</span><span>JUL</span><span>AUG</span><span>SEP</span><span>OCT</span><span>NOV</span><span>DEC</span>
-                 </div>
-                 </div>
+                </div>
+                <div id="month-strip" class="strip">
+                    <span>JAN</span><span>FEB</span><span>MAR</span><span>APR</span><span>MAY</span><span>JUN</span><span>JUL</span><span>AUG</span><span>SEP</span><span>OCT</span><span>NOV</span><span>DEC</span>
+                </div>
+                
+                <!-- Zodiac section -->
+                <div class="visual-aids-title">Zodiac Signs</div>
+                <div id="zodiac-strip" class="zodiac-strip">
+                    <div class="zodiac-item fire">
+                        <div class="zodiac-name">ARIES</div>
+                        <div class="zodiac-dates">Mar 21 - Apr 19</div>
+                    </div>
+                    <div class="zodiac-item earth">
+                        <div class="zodiac-name">TAURUS</div>
+                        <div class="zodiac-dates">Apr 20 - May 20</div>
+                    </div>
+                    <div class="zodiac-item air">
+                        <div class="zodiac-name">GEMINI</div>
+                        <div class="zodiac-dates">May 21 - Jun 20</div>
+                    </div>
+                    <div class="zodiac-item water">
+                        <div class="zodiac-name">CANCER</div>
+                        <div class="zodiac-dates">Jun 21 - Jul 22</div>
+                    </div>
+                    <div class="zodiac-item fire">
+                        <div class="zodiac-name">LEO</div>
+                        <div class="zodiac-dates">Jul 23 - Aug 22</div>
+                    </div>
+                    <div class="zodiac-item earth">
+                        <div class="zodiac-name">VIRGO</div>
+                        <div class="zodiac-dates">Aug 23 - Sep 22</div>
+                    </div>
+                    <div class="zodiac-item air">
+                        <div class="zodiac-name">LIBRA</div>
+                        <div class="zodiac-dates">Sep 23 - Oct 22</div>
+                    </div>
+                    <div class="zodiac-item water">
+                        <div class="zodiac-name">SCORPIO</div>
+                        <div class="zodiac-dates">Oct 23 - Nov 21</div>
+                    </div>
+                    <div class="zodiac-item fire">
+                        <div class="zodiac-name">SAGITTARIUS</div>
+                        <div class="zodiac-dates">Nov 22 - Dec 21</div>
+                    </div>
+                    <div class="zodiac-item earth">
+                        <div class="zodiac-name">CAPRICORN</div>
+                        <div class="zodiac-dates">Dec 22 - Jan 19</div>
+                    </div>
+                    <div class="zodiac-item air">
+                        <div class="zodiac-name">AQUARIUS</div>
+                        <div class="zodiac-dates">Jan 20 - Feb 18</div>
+                    </div>
+                    <div class="zodiac-item water">
+                        <div class="zodiac-name">PISCES</div>
+                        <div class="zodiac-dates">Feb 19 - Mar 20</div>
+                    </div>
+                </div>
+
+                <!-- Seasons section -->
+                <div class="visual-aids-title">Seasons</div>
+                <div id="seasons-strip" class="season-strip">
+                    <div class="season">
+                        <div class="season-name spring">SPRING</div>
+                        <div class="season-months">
+                            <div class="season-month spring">MAR</div>
+                            <div class="season-month spring">APR</div>
+                            <div class="season-month spring">MAY</div>
+                        </div>
+                    </div>
+                    <div class="season">
+                        <div class="season-name summer">SUMMER</div>
+                        <div class="season-months">
+                            <div class="season-month summer">JUN</div>
+                            <div class="season-month summer">JUL</div>
+                            <div class="season-month summer">AUG</div>
+                        </div>
+                    </div>
+                    <div class="season">
+                        <div class="season-name fall">FALL</div>
+                        <div class="season-months">
+                            <div class="season-month fall">SEP</div>
+                            <div class="season-month fall">OCT</div>
+                            <div class="season-month fall">NOV</div>
+                        </div>
+                    </div>
+                    <div class="season">
+                        <div class="season-name winter">WINTER</div>
+                        <div class="season-months">
+                            <div class="season-month winter">DEC</div>
+                            <div class="season-month winter">JAN</div>
+                            <div class="season-month winter">FEB</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <main id="game-content">
                 <div id="question-area">
@@ -407,8 +691,19 @@
             </main>
         </section>
 
+        <!-- This is a sample area where the button should be added to each screen/question -->
+        <div id="sample-screen" class="screen active-screen">
+            <!-- Your existing question content would be here -->
+            
+            <!-- Add this button to each screen/question where you want the check-with-friend functionality -->
+            <button class="check-with-friend-btn">Check with a Friend</button>
+        </div>
+        
+        <!-- Other screens would be here -->
     </div>
-
+    
+    <!-- Add script reference before the closing body tag -->
+    <script src="js/friend-check.js"></script>
     <script type="module" src="js/main.js"></script>
     </body>
 </html>

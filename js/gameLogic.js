@@ -8,9 +8,6 @@ import { familyData, questionBank } from './data.js';
 import { getWeekday, formatDate, shuffleArray } from './utils.js';
 import { checkAndAwardBadges } from './gamification.js';
 import { POINTS_PER_CORRECT_ANSWER, MAX_QUESTIONS_PER_ROUND } from './config.js';
-// Import Mini-game functions
-import { showFindSequenceCardMiniGame } from './miniGames/findCard.js';
-import { implementDragAndDropSequence } from './miniGames/dragDrop.js';
 
 // Select Family Member
 export function selectFamilyMember(name) {
@@ -142,3 +139,79 @@ export function returnToFamilySelection() {
     // Score persists across members unless reset here
     ui.showScreen('selection');
 }
+
+// Game logic for Family Chronicle
+
+import { updateScore, showFeedback, updateProgressBar } from './ui.js';
+
+// Game state variables
+let currentQuestions = [];
+let currentQuestionIndex = 0;
+let score = 0;
+let selectedMember = null;
+
+// Set up a new game session for a family member
+export function startGame(familyMember) {
+    selectedMember = familyMember;
+    currentQuestions = [...questionBank[familyMember]];
+    shuffleArray(currentQuestions);
+    currentQuestionIndex = 0;
+    score = 0;
+    updateScore(score);
+    updateProgressBar(0, currentQuestions.length);
+    nextQuestion();
+}
+
+// Handle returning to family selection screen
+export function returnToFamilySelection() {
+    // Reset game state and show selection screen
+    selectedMember = null;
+    document.getElementById('family-selection-screen').classList.add('active-screen');
+    document.getElementById('game-screen').classList.remove('active-screen');
+}
+
+// Move to the next question
+export function nextQuestion() {
+    const questionArea = document.getElementById('question-area');
+    const answerOptionsArea = document.getElementById('answer-options');
+    const miniGameArea = document.getElementById('mini-game-area');
+    
+    // Clear previous content
+    questionArea.innerHTML = '<p id="question-text"></p>';
+    answerOptionsArea.innerHTML = '';
+    miniGameArea.classList.add('hidden');
+    miniGameArea.innerHTML = '';
+    
+    // Check if we've reached the end of questions
+    if (currentQuestionIndex >= currentQuestions.length) {
+        questionArea.innerHTML = `<h3>Game Completed!</h3><p>Your final score: ${score}</p>`;
+        return;
+    }
+    
+    const question = currentQuestions[currentQuestionIndex];
+    document.getElementById('question-text').textContent = question.text;
+    
+    // Update progress
+    updateProgressBar(currentQuestionIndex, currentQuestions.length);
+    
+    // Handle different question types - reverting to original behavior without card game
+    // Default to multiple choice
+    renderMultipleChoice(question, answerOptionsArea);
+}
+
+// Render standard multiple choice question
+function renderMultipleChoice(question, container) {
+    // Existing multiple choice render code
+    // ...
+}
+
+// Helper function to shuffle an array
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+// Export other functions as needed

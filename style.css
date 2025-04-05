@@ -319,3 +319,98 @@ footer {
     #score-display { margin-top: 5px; }
     #back-to-selection-btn { align-self: flex-end; } /* Move button right */
 }
+
+/* Check with friend modal styling */
+.friend-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border: 5px solid #FFC107;
+    border-radius: 15px;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    animation: dropIn 0.5s ease-in-out;
+}
+
+.close-modal {
+    color: #FF5722;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.close-modal:hover {
+    transform: scale(1.2);
+}
+
+.friend-question-box {
+    background-color: #E8F5E9;
+    border: 3px dashed #4CAF50;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    font-size: 1.2rem;
+    color: #2E7D32;
+}
+
+.friend-controls {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0 10px;
+}
+
+#friend-correct {
+    background-color: #4CAF50;
+    box-shadow: 0 4px 0 #2E7D32;
+}
+
+#friend-correct:hover {
+    background-color: #66BB6A;
+    box-shadow: 0 7px 0 #2E7D32;
+}
+
+#friend-incorrect {
+    background-color: #F44336;
+    box-shadow: 0 4px 0 #C62828;
+}
+
+#friend-incorrect:hover {
+    background-color: #EF5350;
+    box-shadow: 0 7px 0 #C62828;
+}
+
+.check-with-friend-btn {
+    background-color: #9C27B0;
+    box-shadow: 0 4px 0 #6A1B9A;
+    margin-top: 15px;
+}
+
+.check-with-friend-btn:hover {
+    background-color: #BA68C8;
+    box-shadow: 0 7px 0 #6A1B9A;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes dropIn {
+    from {transform: translateY(-50px); opacity: 0;}
+    to {transform: translateY(0); opacity: 1;}
+}
