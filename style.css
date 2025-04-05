@@ -1,0 +1,321 @@
+/* Basic Reset & Body Styling */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff; /* Light Alice Blue background */
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-size: 16px; /* Base font size */
+}
+
+#app-container {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px 30px;
+    width: 90%;
+    max-width: 800px;
+    min-height: 500px;
+    display: flex; /* Helps manage screen transitions */
+    flex-direction: column;
+}
+
+/* Screen Management */
+.screen {
+    display: none; /* Hide screens by default */
+    width: 100%;
+    flex-direction: column; /* Ensure content flows vertically */
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.active-screen {
+    display: flex; /* Show the active screen */
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+
+/* Headers and Footers */
+header, footer {
+    padding: 10px 0;
+    margin-bottom: 15px;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #0056b3; /* Darker blue */
+    margin-bottom: 15px;
+}
+h1 { font-size: 2.2em; }
+h2 { font-size: 1.8em; }
+
+/* Buttons */
+button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.1em; /* Larger font for buttons */
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 5px;
+}
+
+button:hover {
+    background-color: #45a049; /* Darker green */
+}
+
+#family-buttons-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+#family-buttons-container button {
+    background-color: #007bff; /* Blue */
+    min-width: 120px;
+}
+#family-buttons-container button:hover {
+    background-color: #0056b3;
+}
+
+#check-friend-btn, #submit-friend-info-btn {
+    background-color: #ff9800; /* Orange */
+}
+#check-friend-btn:hover, #submit-friend-info-btn:hover {
+    background-color: #e68a00;
+}
+
+#back-to-selection-btn, #cancel-friend-check-btn {
+    background-color: #f44336; /* Red */
+    font-size: 0.9em;
+    padding: 8px 15px;
+}
+#back-to-selection-btn:hover, #cancel-friend-check-btn:hover {
+    background-color: #d32f2f;
+}
+
+
+/* Game Screen Specifics */
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #e7f3ff;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+#member-info-display {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #0056b3;
+    flex-grow: 1; /* Takes available space */
+    margin-right: 10px; /* Spacing from score */
+}
+
+#score-display {
+    font-size: 1.2em;
+    font-weight: bold;
+    background-color: #ffeb3b; /* Yellow background for score */
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+/* Visual Aids */
+#visual-aids {
+    margin-bottom: 20px;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.strip {
+    display: flex;
+    justify-content: center;
+    gap: 5px; /* Space between items */
+    margin-bottom: 10px;
+    flex-wrap: wrap; /* Allow wrapping */
+}
+
+.strip span {
+    background-color: #d1ecf1; /* Light cyan */
+    color: #0c5460; /* Dark cyan text */
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.9em;
+    text-align: center;
+    min-width: 45px; /* Ensure minimum width */
+}
+
+/* Question and Answer Area */
+#game-content {
+    background-color: #fdfdfe;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+#question-area {
+    margin-bottom: 20px;
+}
+
+#question-text {
+    font-size: 1.4em; /* Larger question text */
+    color: #333;
+    text-align: center;
+    min-height: 50px; /* Ensure space even if question is short */
+}
+
+#answer-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#answer-options button {
+    background-color: #6c757d; /* Grey */
+    min-width: 100px;
+}
+#answer-options button:hover {
+    background-color: #5a6268;
+}
+/* Style for number input if used */
+#answer-options input[type="number"] {
+    padding: 10px;
+    font-size: 1.1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 80px;
+    text-align: center;
+}
+
+
+/* Feedback Area */
+#feedback-area {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 1.3em;
+    font-weight: bold;
+    min-height: 30px; /* Reserve space */
+}
+
+.feedback-correct {
+    color: #28a745; /* Green */
+}
+
+.feedback-incorrect {
+    color: #dc3545; /* Red */
+}
+.feedback-prompt {
+    color: #ffc107; /* Yellow/Orange for prompts */
+    font-style: italic;
+}
+
+/* Progress Bar & Badges */
+footer {
+    margin-top: auto; /* Push footer to bottom if content is short */
+}
+#progress-bar-container {
+    width: 100%;
+    background-color: #e9ecef;
+    border-radius: 5px;
+    overflow: hidden;
+    height: 25px;
+    margin-bottom: 10px;
+}
+
+#progress-bar {
+    width: 0%; /* Initial width */
+    height: 100%;
+    background-color: #28a745; /* Green */
+    transition: width 0.5s ease-in-out;
+    text-align: center; /* Optional: show percentage */
+    line-height: 25px; /* Center text vertically */
+    color: white;
+    font-weight: bold;
+}
+
+#badges-display {
+    text-align: center;
+    font-size: 1em;
+    color: #6c757d;
+}
+#earned-badges-list {
+    font-weight: bold;
+    color: #0056b3;
+}
+/* Add styles for badge icons later */
+
+
+/* Check Friend Screen */
+#check-friend-screen label {
+    font-weight: bold;
+    margin-right: 10px;
+    font-size: 1.1em;
+}
+#check-friend-screen input[type="text"],
+#check-friend-screen input[type="date"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    margin-bottom: 10px; /* Spacing */
+}
+
+#friend-results-area {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #e7f3ff;
+    border-radius: 8px;
+    border: 1px solid #b8daff;
+}
+#friend-results-area h3 {
+    color: #0056b3;
+    margin-bottom: 10px;
+}
+#friend-prediction-output {
+    font-size: 1.1em;
+    line-height: 1.5;
+}
+
+
+/* Utility Classes */
+.hidden {
+    display: none !important; /* Force hide */
+}
+
+/* Responsive Adjustments (Example) */
+@media (max-width: 600px) {
+    h1 { font-size: 1.8em; }
+    h2 { font-size: 1.5em; }
+    #app-container { padding: 15px; }
+    button { font-size: 1em; padding: 10px 15px;}
+    .game-header { flex-direction: column; align-items: flex-start; }
+    #score-display { margin-top: 5px; }
+    #back-to-selection-btn { align-self: flex-end; } /* Move button right */
+}
