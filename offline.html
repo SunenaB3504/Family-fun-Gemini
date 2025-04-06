@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Chronicle - Offline</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
+            background-color: #fffde7;
+            text-align: center;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 30px;
+            background: white;
+            border-radius: 20px;
+            border: 5px solid #FFC107;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #FF5722;
+            text-shadow: 1px 1px 0 #FFE082;
+        }
+        
+        .icon {
+            font-size: 80px;
+            margin: 20px 0;
+        }
+        
+        button {
+            background-color: #FF5722;
+            color: white;
+            border: 3px solid #FFC107;
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Comic Sans MS', cursive;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Oops! You're Offline</h1>
+        <div class="icon">📶</div>
+        <p>Family Chronicle needs an internet connection to work properly.</p>
+        <p>Please check your connection and try again.</p>
+        <button onclick="window.location.reload()">Try Again</button>
+    </div>
+</body>
+</html>
