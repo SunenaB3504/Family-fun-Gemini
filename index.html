@@ -523,7 +523,15 @@
                 <h2>Whose milestone do you want to explore?</h2>
             </header>
             <div id="family-buttons-container">
-                </div>
+                <!-- Update data attributes to match keys in data.js -->
+                <button class="family-member-btn" data-member="Mom">Mom</button>
+                <button class="family-member-btn" data-member="Dad">Dad</button>
+                <button class="family-member-btn" data-member="Nandu">Nandu</button>
+                <button class="family-member-btn" data-member="Neil">Neil</button>
+                <button class="family-member-btn" data-member="Grandma">Grandma</button>
+                <button class="family-member-btn" data-member="Grandpa">Grandpa</button>
+                <button class="family-member-btn" data-member="Nia">Nia</button>
+            </div>
             <button id="check-friend-btn">Check with a Friend</button>
              <footer>
                  <p>Select a family member to start!</p>
@@ -690,20 +698,35 @@
                 </div>
             </main>
         </section>
-
-        <!-- This is a sample area where the button should be added to each screen/question -->
-        <div id="sample-screen" class="screen active-screen">
-            <!-- Your existing question content would be here -->
-            
-            <!-- Add this button to each screen/question where you want the check-with-friend functionality -->
-            <button class="check-with-friend-btn">Check with a Friend</button>
-        </div>
-        
-        <!-- Other screens would be here -->
     </div>
     
-    <!-- Add script reference before the closing body tag -->
+    <!-- Updated script loading for better compatibility -->
+    <script>console.log("Starting script loading");</script>
+    
+    <!-- Load main script directly, avoiding any module issues -->
+    <script src="js/main.js"></script>
+    
+    <!-- Load friend check script after main -->
     <script src="js/friend-check.js"></script>
-    <script type="module" src="js/main.js"></script>
+    
+    <!-- Add fallback direct script for family member buttons -->
+    <script>
+        console.log("Adding fallback handlers");
+        // Fallback button handlers
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.family-member-btn');
+            buttons.forEach(function(btn) {
+                const member = btn.getAttribute('data-member');
+                btn.onclick = function() {
+                    console.log("Fallback handler for", member);
+                    if (typeof selectFamilyMember === 'function') {
+                        selectFamilyMember(member);
+                    } else {
+                        console.error("selectFamilyMember function not found");
+                    }
+                };
+            });
+        });
+    </script>
     </body>
 </html>

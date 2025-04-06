@@ -1,0 +1,16 @@
+{
+  "name": "family-fun-gemini",
+  "version": "1.0.0",
+  "description": "A fun family game",
+  "main": "js/main.js",
+  "scripts": {
+    "start": "http-server .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "typescript": "^5.1.6"
+  }
+}

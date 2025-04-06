@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "strict": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,
+    "noEmit": true,
+    "resolveJsonModule": true
+  },
+  "include": [
+    "./js/**/*.js",
+    "./js/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src"  // Exclude the entire src directory with Angular files
+  ]
+}
