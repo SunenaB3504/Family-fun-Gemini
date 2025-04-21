@@ -34,9 +34,11 @@
     <!-- PWA links -->
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/icon-192x192.png">
-    
-    <!-- Add version parameter to prevent caching -->
+      <!-- Add version parameter to prevent caching -->
     <link rel="stylesheet" href="style.css?v=1.0.2">
+    
+    <!-- Font Awesome for reward icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     
     <!-- PWA Service Worker Registration -->
     <script>
@@ -649,8 +651,23 @@
                 <div id="badges-display">
                     Badges: <span id="earned-badges-list">None yet!</span>
                 </div>
-            </footer>
+            </footer>        </section>
+        
+        <!-- New Rewards Screen -->
+        <section id="rewards-screen" class="screen">
+            <header class="rewards-header">
+                <h2>Rewards Center</h2>
+                <div id="rewards-score-display">Score: 0</div>
+                <button id="back-from-rewards-btn">Back to Game</button>
+            </header>
+            <div class="rewards-intro">
+                <p>Earn points by answering questions correctly to unlock special rewards!</p>
+            </div>
+            <div id="rewardsGrid">
+                <!-- Rewards will be dynamically added here -->
+            </div>
         </section>
+        
         <section id="check-friend-screen" class="screen">
             <header>
                 <h2>Check with a Friend</h2>
@@ -674,7 +691,7 @@
     <!-- Updated script loading for better compatibility -->
     <script>console.log("Starting script loading");</script>
     
-    <!-- Load main script directly, avoiding any module issues -->
+    <!-- Load main script directly, avoiding any module issues -->    <script src="js/rewards-system.js"></script>
     <script src="js/main.js"></script>
     <script src="js/friend-check.js"></script>
     <script src="js/touch-helpers.js"></script>

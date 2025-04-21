@@ -7,6 +7,8 @@ export let currentMemberQuestions = [];
 export let currentQuestionIndex = 0;
 export let score = 0;
 export let earnedBadges = [];
+export let earnedRewards = []; // Array to track earned rewards
+export let claimedRewards = []; // Array to track claimed rewards
 export let correctStreak = { // Example for badge tracking
     weekday_sequence: 0,
     month_sequence: 0
