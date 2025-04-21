@@ -235,12 +235,23 @@ function initializeApp() {
     function formatDate(date) {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         return date.toLocaleDateString('en-US', options);
-    }
-      // Initialize hint system
-    initHintSystem();
+    }    // Initialize hint system from hintSystem.js module
+    import('./hintSystem.js')
+        .then(module => {
+            // Call the exported initializeHints function
+            module.initializeHints();
+            console.log("Hint system initialized from module");
+        })
+        .catch(error => {
+            console.error("Error importing hintSystem.js:", error);
+            // Fallback to basic hint system if module fails
+            setupBasicHintSystem();
+        });
     
-    function initHintSystem() {
-        // Set up hint button click handlers
+    function setupBasicHintSystem() {
+        console.log("Setting up basic hint system fallback");
+        
+        // Set up hint button click handlers with proper touch support
         const weekdaysHintButton = document.getElementById('weekdays-hint-button');
         const monthsHintButton = document.getElementById('months-hint-button');
         const zodiacHintButton = document.getElementById('zodiac-hint-button');
@@ -252,33 +263,47 @@ function initializeApp() {
         const seasonsStrip = document.getElementById('seasons-strip');
         const zodiacTitle = document.querySelector('.visual-aids-title');
         
-        // Helper function to toggle hint visibility
-        function toggleHint(button, element, titleElement) {
+        // Helper function to toggle hint visibility with both click and touch support
+        function setupHintButton(button, element, titleElement) {
             if (button) {
-                button.addEventListener('click', function() {
+                // Function to handle both click and touch
+                const toggleHandler = function(e) {
+                    e.preventDefault(); // Prevent default behavior
+                    
                     // Toggle active state on button
-                    this.classList.toggle('active-hint');
+                    button.classList.toggle('active-hint');
+                    
+                    // Toggle button text
+                    if (button.textContent.includes('Show')) {
+                        button.textContent = button.textContent.replace('Show', 'Hide');
+                    } else {
+                        button.textContent = button.textContent.replace('Hide', 'Show');
+                    }
                     
                     // Toggle visibility of the hint element
                     if (element) {
                         element.classList.toggle('visible-hint');
                     }
                     
-                    // If this is the zodiac hint, also toggle the title
-                    if (titleElement && this === zodiacHintButton) {
+                    // Toggle the title if applicable
+                    if (titleElement) {
                         titleElement.classList.toggle('visible-hint');
                     }
-                });
+                };
+                
+                // Add event listeners for both click and touch events
+                button.addEventListener('click', toggleHandler);
+                button.addEventListener('touchend', toggleHandler);
             }
         }
         
-        // Set up each hint button
-        toggleHint(weekdaysHintButton, weekdayStrip);
-        toggleHint(monthsHintButton, monthStrip);
-        toggleHint(zodiacHintButton, zodiacStrip, zodiacTitle);
-        toggleHint(seasonsHintButton, seasonsStrip, document.querySelectorAll('.visual-aids-title')[1]);
+        // Set up each hint button with improved event handling
+        setupHintButton(weekdaysHintButton, weekdayStrip);
+        setupHintButton(monthsHintButton, monthStrip);
+        setupHintButton(zodiacHintButton, zodiacStrip, zodiacTitle);
+        setupHintButton(seasonsHintButton, seasonsStrip, document.querySelectorAll('.visual-aids-title')[1]);
         
-        console.log("Hint system initialized");
+        console.log("Basic hint system initialized with touch support");
     }
     
     // ...existing code for other functions...
