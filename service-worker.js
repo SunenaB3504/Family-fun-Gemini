@@ -1,15 +1,15 @@
-const CACHE_NAME = 'family-chronicle-v1';
+const CACHE_NAME = 'family-chronicle-v2'; // Updated cache name to force refresh
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/js/main.js',
-  '/js/friend-check.js',
-  '/js/touch-helpers.js',
-  '/js/data.js',
-  '/manifest.json',
-  '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png',
+  './',
+  './index.html',
+  './style.css',
+  './js/main.js',
+  './js/friend-check.js',
+  './js/touch-helpers.js',
+  './js/data.js',
+  './manifest.json',
+  './icons/icon-192x192.png',
+  './icons/icon-512x512.png',
   'https://www.transparenttextures.com/patterns/cubes.png',
   'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js'
 ];

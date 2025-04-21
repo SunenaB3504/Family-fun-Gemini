@@ -1,6 +1,6 @@
 // Simple vanilla JavaScript implementation that uses data.js
 
-// Immediately load data from data.js (no need for ES module imports)
+// Immediately load data from data.js
 let familyData = {};
 let questionBank = {};
 
@@ -14,47 +14,35 @@ window.onload = function() {
 function loadDataThenInitialize() {
     console.log("Loading data from data.js");
     
-    // Create a script element to load data.js
+    // Use a simple script import approach
     const script = document.createElement('script');
     script.src = 'js/data.js';
-    script.type = 'module';
-    
+    script.type = 'text/javascript'; // Use standard JavaScript, not module
+      
     script.onload = function() {
-        console.log("data.js loaded");
-        // Since data.js uses 'export', we need to fetch the data differently
-        fetch('js/data.js')
-            .then(response => response.text())
-            .then(code => {
-                // Extract the data objects from the code
-                try {
-                    // Extract data directly from the js file
-                    const familyDataMatch = code.match(/export const familyData = (\{[\s\S]*?\n\});/);
-                    const questionBankMatch = code.match(/export const questionBank = (\{[\s\S]*?\n\});/);
-                    
-                    if (familyDataMatch && familyDataMatch[1]) {
-                        // Convert the text to an object using Function constructor (safer than eval)
-                        familyData = new Function(`return ${familyDataMatch[1]}`)();
-                        console.log("Family data loaded:", Object.keys(familyData));
-                    }
-                    
-                    if (questionBankMatch && questionBankMatch[1]) {
-                        questionBank = new Function(`return ${questionBankMatch[1]}`)();
-                        console.log("Question bank loaded:", Object.keys(questionBank));
-                    }
-                    
-                    // Now initialize the app with the loaded data
+        console.log("data.js loaded successfully");
+        
+        // Check if familyData and questionBank are available globally
+        if (window.familyData && window.questionBank) {
+            familyData = window.familyData;
+            questionBank = window.questionBank;
+            console.log("Data loaded from global scope:", Object.keys(familyData));
+            initializeApp();
+        } else {
+            // Try alternative loading method
+            import('./data.js')
+                .then(module => {
+                    familyData = module.familyData;
+                    questionBank = module.questionBank;
+                    console.log("Data loaded via import:", Object.keys(familyData));
                     initializeApp();
-                } catch (error) {
-                    console.error("Error parsing data.js:", error);
-                    // Fall back to hardcoded data
+                })
+                .catch(error => {
+                    console.error("Error importing data.js:", error);
+                    // Continue with initialization anyway using whatever data we have
                     initializeApp();
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching data.js:", error);
-                // Fall back to hardcoded data
-                initializeApp();
-            });
+                });
+        }
     };
     
     script.onerror = function() {
@@ -63,6 +51,7 @@ function loadDataThenInitialize() {
         initializeApp();
     };
     
+    // Add script to document head (only once)
     document.head.appendChild(script);
 }
 
@@ -247,12 +236,49 @@ function initializeApp() {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         return date.toLocaleDateString('en-US', options);
     }
-    
-    // Initialize hint system
+      // Initialize hint system
     initHintSystem();
     
     function initHintSystem() {
-        // ...existing code for hint buttons...
+        // Set up hint button click handlers
+        const weekdaysHintButton = document.getElementById('weekdays-hint-button');
+        const monthsHintButton = document.getElementById('months-hint-button');
+        const zodiacHintButton = document.getElementById('zodiac-hint-button');
+        const seasonsHintButton = document.getElementById('seasons-hint-button');
+        
+        const weekdayStrip = document.getElementById('weekday-strip');
+        const monthStrip = document.getElementById('month-strip');
+        const zodiacStrip = document.getElementById('zodiac-strip');
+        const seasonsStrip = document.getElementById('seasons-strip');
+        const zodiacTitle = document.querySelector('.visual-aids-title');
+        
+        // Helper function to toggle hint visibility
+        function toggleHint(button, element, titleElement) {
+            if (button) {
+                button.addEventListener('click', function() {
+                    // Toggle active state on button
+                    this.classList.toggle('active-hint');
+                    
+                    // Toggle visibility of the hint element
+                    if (element) {
+                        element.classList.toggle('visible-hint');
+                    }
+                    
+                    // If this is the zodiac hint, also toggle the title
+                    if (titleElement && this === zodiacHintButton) {
+                        titleElement.classList.toggle('visible-hint');
+                    }
+                });
+            }
+        }
+        
+        // Set up each hint button
+        toggleHint(weekdaysHintButton, weekdayStrip);
+        toggleHint(monthsHintButton, monthStrip);
+        toggleHint(zodiacHintButton, zodiacStrip, zodiacTitle);
+        toggleHint(seasonsHintButton, seasonsStrip, document.querySelectorAll('.visual-aids-title')[1]);
+        
+        console.log("Hint system initialized");
     }
     
     // ...existing code for other functions...
@@ -309,13 +335,31 @@ function initializeApp() {
         
         container.appendChild(sourceContainer);
         container.appendChild(targetContainer);
+          // Create button container for better alignment
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'sequence-buttons';
+        buttonContainer.style.display = 'flex';
+        buttonContainer.style.justifyContent = 'center';
+        buttonContainer.style.gap = '10px';
+        buttonContainer.style.marginTop = '15px';
         
         // Add check button
         const checkButton = document.createElement('button');
         checkButton.textContent = 'Check Order';
         checkButton.className = 'sequence-check-btn';
         checkButton.addEventListener('click', () => checkSequenceOrder(question));
-        container.appendChild(checkButton);
+        
+        // Add reset button
+        const resetButton = document.createElement('button');
+        resetButton.textContent = 'Reset';
+        resetButton.className = 'sequence-reset-btn';
+        resetButton.style.backgroundColor = '#607D8B';
+        resetButton.addEventListener('click', () => resetSequenceOrder(question, sourceContainer, targetContainer));
+        
+        // Add buttons to container
+        buttonContainer.appendChild(checkButton);
+        buttonContainer.appendChild(resetButton);
+        container.appendChild(buttonContainer);
     }
     
     // Helper functions for drag and drop
@@ -356,6 +400,33 @@ function initializeApp() {
                     item.remove();
                 }
             });
+        }
+    }
+      function resetSequenceOrder(question, sourceContainer, targetContainer) {
+        // Clear all drop zones
+        const dropZones = document.querySelectorAll('.drop-zone');
+        dropZones.forEach(zone => {
+            zone.innerHTML = '';
+        });
+        
+        // Recreate items in source container
+        sourceContainer.innerHTML = '';
+        const scrambledItems = [...question.items];
+        shuffleArray(scrambledItems);
+        
+        scrambledItems.forEach(item => {
+            const dragItem = document.createElement('div');
+            dragItem.textContent = item;
+            dragItem.className = 'draggable-item';
+            dragItem.setAttribute('draggable', true);
+            dragItem.addEventListener('dragstart', handleDragStart);
+            sourceContainer.appendChild(dragItem);
+        });
+        
+        // Clear any feedback
+        const feedbackArea = document.getElementById('feedback-area');
+        if (feedbackArea) {
+            feedbackArea.innerHTML = '';
         }
     }
     

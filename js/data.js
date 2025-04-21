@@ -1,8 +1,8 @@
 // js/data.js
 // (Consider loading this from JSON files in a future step for easier management)
 
-// Sample Family Data
-export const familyData = {
+// Sample Family Data - make available both as module export and global variable
+window.familyData = {
     "Mom": {
         dob: "1980-07-01",
         milestones: [ /* ... */ ]
@@ -42,7 +42,7 @@ export const familyData = {
 };
 
 // Sample Question Bank
-export const questionBank = {
+window.questionBank = {
      "Mom": [
          // Basic date concepts
          { type: "weekday_sequence", text: "Mom was born on a Tuesday. What day comes after Tuesday?", answer: "Wednesday", options: ["Monday", "Wednesday", "Thursday"] },
